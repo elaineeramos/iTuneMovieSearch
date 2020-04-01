@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/movieDetailPage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <ImageView
+            android:id = "@+id/movieDetailPoster"
+            android:layout_width = "match_parent"
+            android:layout_height = "200dp"
+            android:layout_margin="4dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/movieDetailGenreTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movieDetailPoster" />
+
+        <TextView
+            android:id="@+id/movieDetailPriceTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:gravity="right"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movieDetailPoster" />
+
+        <TextView
+            android:id="@+id/movieDetailDescriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewStart"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:paddingTop="16dp"
+            android:textSize="16sp"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/moviePoster"
+            app:layout_constraintTop_toBottomOf="@+id/movieDetailPriceTextView" />
+
+        <TextView
+            android:id="@+id/dataRetrievalTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewStart"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:paddingTop="16dp"
+            android:textSize="12sp"
+            android:textColor="@color/textTertiary"
+            app:layout_constraintTop_toBottomOf="@+id/movieDetailDescriptionTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
