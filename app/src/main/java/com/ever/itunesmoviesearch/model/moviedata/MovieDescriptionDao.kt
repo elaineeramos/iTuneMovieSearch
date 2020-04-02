@@ -1,6 +1,5 @@
 package com.ever.itunesmoviesearch.model.moviedata
 
-import androidx.annotation.Nullable
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -22,13 +21,12 @@ interface MovieDetailDao {
     fun getAllMovieDescriptions(): Flowable<List<MovieDescription>>
 
     /**
-     * Obtain specific movie descriiption from the database
+     * Obtain specific movie description from the database
      *
      * @param movieIndex position of the movie description in the database
      * @return movie description for specific item in the database
      */
     @Query("SELECT * FROM movie_descriptions WHERE list_position = :movieIndex ")
-    @Nullable
     fun getMovieFullDescription(movieIndex: Int): Flowable<MovieDescription>
 
     /**

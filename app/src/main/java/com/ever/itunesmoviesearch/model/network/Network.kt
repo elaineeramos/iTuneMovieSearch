@@ -13,11 +13,7 @@ class Network {
         val instance = Network()
     }
 
-    private val placeHolderApi: JsonPlaceHolder
-
-    init {
-        placeHolderApi = ServiceGenerator.createService(JsonPlaceHolder::class.java)
-    }
+    private val placeHolderApi: JsonPlaceHolder = ServiceGenerator.createService(JsonPlaceHolder::class.java)
 
     /**
      * Search iTunes movie given specific term, country and media
@@ -25,6 +21,6 @@ class Network {
      * @return Response of iTunes to query
      */
     fun getMessagesRx(): Single<ItunesResponse> {
-        return placeHolderApi.searchMovie(getSearchTerm(), getSearchCountry(), getSearchMedia(), "")
+        return placeHolderApi.searchMovie("star", "au", "movie", "")
     }
 }

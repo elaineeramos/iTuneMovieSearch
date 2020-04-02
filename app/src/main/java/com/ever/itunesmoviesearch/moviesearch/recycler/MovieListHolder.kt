@@ -1,33 +1,18 @@
 package com.ever.itunesmoviesearch.moviesearch.recycler
 
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
+import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ever.itunesmoviesearch.R
+import com.ever.itunesmoviesearch.databinding.ItemMovieOverviewBinding
 import com.ever.itunesmoviesearch.model.moviedata.MovieDescription
 
 /**
  * Class responsible for movie list view holder
+ * Use data binding to set data on movie list overview
  *
  */
-class MovieListHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    val context = itemView.context
-    val imageView : ImageView
-    val movieTitleTextView: TextView
-    val genreTextView: TextView
-    val priceTextView: TextView
-    val accessTimeTextView: TextView
-
-    init {
-        imageView = itemView.findViewById(R.id.moviePoster)
-        movieTitleTextView = itemView.findViewById(R.id.movieTitleTextView)
-        genreTextView = itemView.findViewById(R.id.genreTextView)
-        priceTextView = itemView.findViewById(R.id.priceTextView)
-        accessTimeTextView = itemView.findViewById(R.id.accessTimeTextView)
-    }
+class MovieListHolder (private var binding: ItemMovieOverviewBinding, private var context: Context) : RecyclerView.ViewHolder(binding.root) {
 
     /**
      * Set the movie details on the text and image views in the holder
@@ -47,10 +32,7 @@ class MovieListHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @return None
      */
     private fun setMovieTextDetail(movieDescription: MovieDescription) {
-        movieTitleTextView.text = movieDescription.trackName
-        genreTextView.text = movieDescription.genre
-        priceTextView.text = context.getString(R.string.aud_sign) + movieDescription.price
-        accessTimeTextView.text = movieDescription.accessDate
+        this.binding.movieOverview = movieDescription
     }
 
     /**
@@ -62,11 +44,11 @@ class MovieListHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @return None
      */
     private fun setMoviePoster(movieDescription: MovieDescription) {
-        Glide.with(context)
+        Glide.with(context.applicationContext)
              .load(movieDescription.artwork)
              .placeholder(R.drawable.ic_movie_roll)
              .error(R.drawable.ic_movie_roll)
              .dontAnimate()
-             .into(imageView)
+             .into(binding.moviePoster)
     }
 }

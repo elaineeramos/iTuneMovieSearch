@@ -1,7 +1,7 @@
 package com.ever.itunesmoviesearch.model
 
 import androidx.room.*
-import com.ever.itunesmoviesearch.MovieSearchAppplication
+import com.ever.itunesmoviesearch.MovieSearchApplication
 import com.ever.itunesmoviesearch.model.moviedata.ItunesResponse
 import com.ever.itunesmoviesearch.model.moviedata.MovieDescription
 import com.ever.itunesmoviesearch.model.moviedata.MovieDetailDao
@@ -32,7 +32,7 @@ class MovieRepository {
 
         GlobalScope.launch{
             val database =
-                MovieSearchAppplication.database
+                MovieSearchApplication.database
             database.movieDetailDao().insertMovieDescriptions(movieDescriptionList)
         }
     }
@@ -45,16 +45,16 @@ class MovieRepository {
      * @return list of movie description
      */
     private fun convertResponseToDbData (response: ItunesResponse?) : ArrayList<MovieDescription> {
-        var movieDbList: ArrayList<MovieDescription> = arrayListOf()
+        val movieDbList: ArrayList<MovieDescription> = arrayListOf()
+        val time = getCurrentTime()
         var movieIndex = 0
-        var time = getCurrentTime()
 
         response?.results?.forEach{
-            var movie = MovieDescription(
+            val movie = MovieDescription(
                 movieIndex,
                 it.trackName,
                 it.artworkUrl100,
-                it.trackPrice.toString(),
+                "A$" + it.trackPrice.toString(),
                 it.primaryGenreName,
                 it.longDescription,
                 time,
@@ -73,30 +73,30 @@ class MovieRepository {
      * Obtain the number of data in repository
      *
      */
-    fun getMovieDescriptionCount() = MovieSearchAppplication.database.movieDetailDao().getMovieDescriptionCount()
+    fun getMovieDescriptionCount() = MovieSearchApplication.database.movieDetailDao().getMovieDescriptionCount()
 
     /**
      *
      * Obtain all the movie descriptions in the repository
      *
      */
-    fun getAllMovieDescription() = MovieSearchAppplication.database.movieDetailDao().getAllMovieDescriptions()
+    fun getAllMovieDescription() = MovieSearchApplication.database.movieDetailDao().getAllMovieDescriptions()
 
     /**
      *
      * Obtain movie description for specified movie index
      *
      */
-    fun getMovieFullDescription(movieIndex: Int) = MovieSearchAppplication.database.movieDetailDao().getMovieFullDescription(movieIndex)
+    fun getMovieFullDescription(movieIndex: Int) = MovieSearchApplication.database.movieDetailDao().getMovieFullDescription(movieIndex)
 
     /**
      *
      * Set the last access date for a movie description
      *
      */
-    fun updateAccessDate(accessTime: String, movieIndex: Int) = MovieSearchAppplication.database.movieDetailDao().updateAccessDate(accessTime, movieIndex)
+    fun updateAccessDate(accessTime: String, movieIndex: Int) = MovieSearchApplication.database.movieDetailDao().updateAccessDate(accessTime, movieIndex)
 
-    fun removeAllMovies() = MovieSearchAppplication.database.movieDetailDao().removeAllMovies()
+    fun removeAllMovies() = MovieSearchApplication.database.movieDetailDao().removeAllMovies()
 }
 
 /**
@@ -104,7 +104,7 @@ class MovieRepository {
  * Room database for the movie description
  *
  */
-@Database(entities = arrayOf(MovieDescription::class), version = 1, exportSchema = false)
+@Database(entities = [MovieDescription::class], version = 1, exportSchema = false)
 abstract class LocalDatabase: RoomDatabase() {
     abstract fun movieDetailDao(): MovieDetailDao
 }

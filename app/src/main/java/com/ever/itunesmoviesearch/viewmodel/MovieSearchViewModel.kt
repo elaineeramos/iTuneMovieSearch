@@ -1,8 +1,6 @@
 package com.ever.itunesmoviesearch.viewmodel
 
-import android.content.res.Resources
 import androidx.lifecycle.ViewModel
-import com.ever.itunesmoviesearch.R
 import com.ever.itunesmoviesearch.model.MovieRepository
 import com.ever.itunesmoviesearch.model.moviedata.ItunesResponse
 import com.ever.itunesmoviesearch.model.moviedata.MovieDescription
@@ -19,7 +17,7 @@ import io.reactivex.disposables.CompositeDisposable
  * asking data from the repository
  *
  * ViewModel class is chosen so that UI related data
- * is ensured to stay during the life cycle of the viewmodel
+ * is ensured to stay during the life cycle of the view model
  * and survives device configuration change
  */
 class MovieSearchViewModel : ViewModel() {
@@ -30,14 +28,9 @@ class MovieSearchViewModel : ViewModel() {
 
     private val bag = CompositeDisposable()
 
-    init {
-        println("Start Movie Search view model")
-    }
-
     /**
      * Obtain the iTunes response from network
      *
-     * @param None
      * @return iTunes Response
      */
     fun getMessagesRx(): Single<ItunesResponse> {
@@ -47,8 +40,7 @@ class MovieSearchViewModel : ViewModel() {
     /**
      * Set the movie to database
      *
-     * @param response response from iTunes
-     * @return iTunes Response
+     * @param movieDetails iTunes Response of movie details
      */
     fun setMovieToDatabase(movieDetails: ItunesResponse) {
         movieRepository.setMovieToDatabase(movieDetails)
@@ -57,7 +49,6 @@ class MovieSearchViewModel : ViewModel() {
     /**
      * Obtain the description of all movies
      *
-     * @param None
      * @return list of movie descriptions
      */
     fun getMovieDetail(): Flowable<List<MovieDescription>> {
@@ -67,7 +58,6 @@ class MovieSearchViewModel : ViewModel() {
     /**
      * Obtain the number of movie description in the repository
      *
-     * @param None
      * @return number of movie description
      */
     fun getMovieDescriptionCount(): Int {
@@ -85,6 +75,10 @@ class MovieSearchViewModel : ViewModel() {
         movieRepository.updateAccessDate(displayText, movieIndex)
     }
 
+    /**
+     * Remove all movies in the database
+     *
+     */
     fun removeAllMovies() {
         movieRepository.removeAllMovies()
     }
@@ -93,8 +87,6 @@ class MovieSearchViewModel : ViewModel() {
      * Clear and dispose all the contained Disposables in the application
      * when movie search activity is destroyed
      *
-     * @param None
-     * @return None
      */
     override fun onCleared() {
         super.onCleared()

@@ -24,8 +24,8 @@ class MovieSearchActivity : AppCompatActivity() {
 
     private val bag = CompositeDisposable()
 
-    lateinit var adapter: MovieListAdapter
-    lateinit var viewModel : MovieSearchViewModel
+    private lateinit var adapter: MovieListAdapter
+    private lateinit var viewModel : MovieSearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +43,6 @@ class MovieSearchActivity : AppCompatActivity() {
     /**
      * Attach the movie recycler view to the activity
      *
-     * @param None
      * @return None
      */
     private fun attachUI() {
@@ -60,7 +59,6 @@ class MovieSearchActivity : AppCompatActivity() {
      * Set the adapter to recycler view
      * Set the method to be performed when item is clicked
      *
-     * @param None
      * @return None
      */
     private fun initializeListView() {
@@ -72,7 +70,6 @@ class MovieSearchActivity : AppCompatActivity() {
      * Starts activity to display more details on the selected movie
      * Update the access time for the movie description
      *
-     * @param None
      * @return None
      */
     private fun rowTapped(position: Int) {
@@ -89,22 +86,19 @@ class MovieSearchActivity : AppCompatActivity() {
     }
 
     /**
-     * Initiate movie search viewmodel
+     * Initiate movie search view model
      *
-     * @param None
      * @return None
      */
     private fun startMovieSearchViewModel () {
         viewModel = ViewModelProviders.of(this).get(MovieSearchViewModel::class.java)
     }
 
-    //region EVER TESTING TODO MOVE THIS!!!!
     /**
      * Checks the database
      * If there is no movie description in the database, movie is queried to iTunes
      * If there is movie description in the database, the saved data is used
      *
-     * @param None
      * @return None
      */
     private fun checkDatabase() {
@@ -119,11 +113,9 @@ class MovieSearchActivity : AppCompatActivity() {
     /**
      * Save the obtained data from iTunes query and load the data to repository
      *
-     * @param None
      * @return None
      */
     private fun saveData() {
-        println("EVER TESTING save data")
         viewModel.getMessagesRx()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { movieDetails ->
@@ -136,11 +128,9 @@ class MovieSearchActivity : AppCompatActivity() {
     /**
      * load data from repository to adapter
      *
-     * @param None
      * @return None
      */
     private fun loadData() {
-        println("EVER TESTING load data")
         viewModel.getMovieDetail()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { movieDetails ->
@@ -148,12 +138,10 @@ class MovieSearchActivity : AppCompatActivity() {
             }
             .disposedBy(bag)
     }
-    //endregion EVER TESTING TODO MOVE THIS!!!!
 
     /**
      * Clear and dispose all the contained Disposables in the application
      *
-     * @param None
      * @return None
      */
     override fun onDestroy() {

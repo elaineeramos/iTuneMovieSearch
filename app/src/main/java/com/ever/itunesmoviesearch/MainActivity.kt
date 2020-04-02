@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     /**
      * Initiate intent to start Movie Search
      *
-     * @param None
      * @return None
      */
     private fun startMovieSearch() {

@@ -23,11 +23,10 @@ fun Disposable.disposedBy(bag: CompositeDisposable) {
 /**
  * Obtains current time in YYYY MM dd HH:mm format
  *
- * @param None
  * @return current time
  */
 fun getCurrentTime() : String {
-    var date = Date()
+    val date = Date()
     val formatter = SimpleDateFormat("YYYY MM dd HH:mm")
     return formatter.format(date)
 }

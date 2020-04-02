@@ -3,21 +3,24 @@ package com.ever.itunesmoviesearch.moviesearch.recycler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ever.itunesmoviesearch.R
+import com.ever.itunesmoviesearch.databinding.ItemMovieOverviewBinding
 import com.ever.itunesmoviesearch.model.moviedata.MovieDescription
 import com.ever.itunesmoviesearch.utility.disposedBy
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 
-typealias ItemClickedlambda = (v: View, position: Int) -> Unit
+typealias ItemClickedLambda = (v: View, position: Int) -> Unit
 
 /**
  * Class responsible for movie list for recycler view
  *
  */
-class MovieListAdapter(var onItemClicked: ItemClickedlambda): RecyclerView.Adapter<MovieListHolder>() {
+class MovieListAdapter(var onItemClicked: ItemClickedLambda): RecyclerView.Adapter<MovieListHolder>() {
+    private lateinit var binding: ItemMovieOverviewBinding
 
     internal val movieDescription = BehaviorRelay.createDefault(mutableListOf<MovieDescription>())
     private val bag = CompositeDisposable()
@@ -38,10 +41,10 @@ class MovieListAdapter(var onItemClicked: ItemClickedlambda): RecyclerView.Adapt
      * @return created view holder
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie_overview, parent, false)
-        val viewHolder = MovieListHolder(view)
+        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_movie_overview, parent, false)
 
-        view.setOnClickListener { v ->
+        val viewHolder = MovieListHolder(binding, parent.context)
+        binding.messageCardView.setOnClickListener { v ->
             onItemClicked(v, viewHolder.adapterPosition)
         }
 
@@ -62,7 +65,6 @@ class MovieListAdapter(var onItemClicked: ItemClickedlambda): RecyclerView.Adapt
     /**
      * Obtain the number of items in the adapter
      *
-     * @param None
      * @return number of movies in the adapter
      */
     override fun getItemCount(): Int = movieDescription.value.size

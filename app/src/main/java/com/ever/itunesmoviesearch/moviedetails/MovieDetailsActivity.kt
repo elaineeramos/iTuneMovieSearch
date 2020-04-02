@@ -1,12 +1,12 @@
 package com.ever.itunesmoviesearch.moviedetails
 
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.ever.itunesmoviesearch.R
+import com.ever.itunesmoviesearch.databinding.ActivityMovieDetailBinding
 import com.ever.itunesmoviesearch.model.moviedata.MovieDescription
 import com.ever.itunesmoviesearch.utility.disposedBy
 import com.ever.itunesmoviesearch.viewmodel.MovieDetailsViewModel
@@ -17,14 +17,17 @@ import kotlinx.coroutines.launch
 
 /**
  * Class responsible for displaying movie details
+ * Use data binding to set movie details
  *
  */
 class MovieDetailsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMovieDetailBinding
+
     private val bag = CompositeDisposable()
 
     private val movieIndexExtra : String = "movie_index"
 
-    lateinit var viewModel : MovieDetailsViewModel
+    private lateinit var viewModel : MovieDetailsViewModel
 
     /**
      * Initialize movie details page of the application
@@ -33,12 +36,13 @@ class MovieDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_movie_detail)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         startMovieDetailViewModel()
 
-        var movieIndex : Int = intent.getStringExtra(movieIndexExtra)!!.toInt()
+        val movieIndex : Int = intent.getStringExtra(movieIndexExtra)!!.toInt()
 
         GlobalScope.launch {
             loadMovieDescription(movieIndex)
@@ -46,9 +50,8 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     /**
-     * Initiate movie detail viewmodel
+     * Initiate movie detail view model
      *
-     * @param None
      * @return None
      */
     private fun startMovieDetailViewModel () {
@@ -90,16 +93,8 @@ class MovieDetailsActivity : AppCompatActivity() {
      */
     private fun setMovieTextDetail(movieDescription: MovieDescription) {
         val actionBar = supportActionBar
-        var genreTextView : TextView = findViewById(R.id.movieDetailGenreTextView)
-        var priceTextView : TextView = findViewById(R.id.movieDetailPriceTextView)
-        var descriptionTextView : TextView = findViewById(R.id.movieDetailDescriptionTextView)
-        var dataRetrievalTime : TextView = findViewById(R.id.dataRetrievalTime)
-
         actionBar!!.title = movieDescription.trackName
-        genreTextView.text = movieDescription.genre
-        priceTextView.text = getString(R.string.aud_sign) + movieDescription.price
-        descriptionTextView.text = movieDescription.longDescription
-        dataRetrievalTime.text = movieDescription.lastRetrieved
+        binding.movieDetail = movieDescription
     }
 
     /**
@@ -111,21 +106,18 @@ class MovieDetailsActivity : AppCompatActivity() {
      * @return None
      */
     private fun setMoviePoster(movieDescription: MovieDescription) {
-        val imageView : ImageView = findViewById(R.id.movieDetailPoster)
-
-        Glide.with(this)
+        Glide.with(applicationContext)
             .load(movieDescription.artwork)
             .placeholder(R.drawable.ic_movie_roll)
             .error(R.drawable.ic_movie_roll)
             .dontAnimate()
-            .into(imageView)
+            .into(binding.movieDetailPoster)
     }
 
     /**
      * When back button is pressed, the application goes back to
      * the previous activity, which shows lists of movies
      *
-     * @param movieDescription
      * @return None
      */
     override fun onSupportNavigateUp(): Boolean {

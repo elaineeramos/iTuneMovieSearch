@@ -7,7 +7,7 @@ import com.ever.itunesmoviesearch.model.LocalDatabase
 /**
  * Builds the database
  */
-class MovieSearchAppplication: Application() {
+class MovieSearchApplication: Application() {
 
     companion object {
         lateinit var database: LocalDatabase
@@ -23,7 +23,6 @@ class MovieSearchAppplication: Application() {
      * Setup room using database builder so that information in
      * the database persists even if after application is restarted
      *
-     * @param None
      * @return None
      */
     private fun setupDatabase(){
