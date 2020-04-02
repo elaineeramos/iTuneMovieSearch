@@ -9,7 +9,7 @@ import com.ever.itunesmoviesearch.R
 import com.ever.itunesmoviesearch.databinding.ActivityMovieDetailBinding
 import com.ever.itunesmoviesearch.model.moviedata.MovieDescription
 import com.ever.itunesmoviesearch.utility.disposedBy
-import com.ever.itunesmoviesearch.viewmodel.MovieDetailsViewModel
+import com.ever.itunesmoviesearch.viewmodel.MovieSearchViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.GlobalScope
@@ -27,7 +27,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private val movieIndexExtra : String = "movie_index"
 
-    private lateinit var viewModel : MovieDetailsViewModel
+    private lateinit var viewModel : MovieSearchViewModel
 
     /**
      * Initialize movie details page of the application
@@ -55,7 +55,7 @@ class MovieDetailsActivity : AppCompatActivity() {
      * @return None
      */
     private fun startMovieDetailViewModel () {
-        viewModel = ViewModelProviders.of(this).get(MovieDetailsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(MovieSearchViewModel::class.java)
     }
 
     /**

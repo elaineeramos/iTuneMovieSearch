@@ -61,6 +61,15 @@ class MovieSearchViewModel : ViewModel() {
     }
 
     /**
+     * Obtain the full description of a selected movie from repository
+     *
+     * @return movie description
+     */
+    fun getMovieFullDetail(movieIndex : Int): Flowable<MovieDescription> {
+        return movieRepository.getMovieFullDescription(movieIndex)
+    }
+
+    /**
      * Obtain the number of movie description in the repository
      *
      * @return number of movie description
