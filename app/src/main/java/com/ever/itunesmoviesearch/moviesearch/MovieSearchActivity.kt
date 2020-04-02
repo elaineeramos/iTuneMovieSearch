@@ -3,6 +3,7 @@ package com.ever.itunesmoviesearch.moviesearch
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ever.itunesmoviesearch.moviedetails.MovieDetailsActivity
@@ -10,6 +11,7 @@ import com.ever.itunesmoviesearch.R
 import com.ever.itunesmoviesearch.moviesearch.recycler.MovieListAdapter
 import com.ever.itunesmoviesearch.utility.disposedBy
 import com.ever.itunesmoviesearch.viewmodel.MovieSearchViewModel
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_movie_search.*
@@ -34,6 +36,8 @@ class MovieSearchActivity : AppCompatActivity() {
         attachUI()
 
         startMovieSearchViewModel()
+
+        initializeSnackbar()
 
         GlobalScope.launch {
             checkDatabase()
@@ -105,7 +109,7 @@ class MovieSearchActivity : AppCompatActivity() {
         if (viewModel.getMovieDescriptionCount() != 0) {
             loadData()
         }
-        else{
+        else if(viewModel.isDeviceConnectedToNetwork(applicationContext)) {
             saveData()
         }
     }
@@ -128,7 +132,6 @@ class MovieSearchActivity : AppCompatActivity() {
     /**
      * load data from repository to adapter
      *
-     * @return None
      */
     private fun loadData() {
         viewModel.getMovieDetail()
@@ -137,6 +140,25 @@ class MovieSearchActivity : AppCompatActivity() {
                 adapter.movieDescription.accept(movieDetails.toMutableList())
             }
             .disposedBy(bag)
+    }
+
+    /**
+     * Initialize snackbar
+     * When device is detected to have no internet connection during application boot-up,
+     * snackbar notification appears
+     *
+     */
+    private fun initializeSnackbar() {
+        viewModel.snackbarNotificationData.observe(this, Observer {
+            if (it == true) {
+                Snackbar.make(
+                    this!!.findViewById(android.R.id.content),
+                    "No Internet Connection",
+                    Snackbar.LENGTH_LONG
+                ).show()
+                viewModel.doneShowingSnackbar()
+            }
+        })
     }
 
     /**

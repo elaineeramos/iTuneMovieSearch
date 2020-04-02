@@ -1,5 +1,7 @@
 package com.ever.itunesmoviesearch.viewmodel
 
+import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ever.itunesmoviesearch.model.MovieRepository
 import com.ever.itunesmoviesearch.model.moviedata.ItunesResponse
@@ -7,6 +9,7 @@ import com.ever.itunesmoviesearch.model.moviedata.MovieDescription
 import com.ever.itunesmoviesearch.model.network.Network
 import com.ever.itunesmoviesearch.moviesearch.recycler.MovieListAdapter
 import com.ever.itunesmoviesearch.utility.getCurrentTime
+import com.ever.itunesmoviesearch.utility.isNetworkAvailable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -27,6 +30,8 @@ class MovieSearchViewModel : ViewModel() {
     private val movieRepository = MovieRepository.shared
 
     private val bag = CompositeDisposable()
+
+    var snackbarNotificationData = MutableLiveData<Boolean>()
 
     /**
      * Obtain the iTunes response from network
@@ -81,6 +86,24 @@ class MovieSearchViewModel : ViewModel() {
      */
     fun removeAllMovies() {
         movieRepository.removeAllMovies()
+    }
+
+    /**
+     * Set snackbar event to false
+     *
+     */
+    fun isDeviceConnectedToNetwork(context: Context) : Boolean {
+        val isNetworkAvailable = isNetworkAvailable(context)
+        snackbarNotificationData.postValue(!isNetworkAvailable)
+        return isNetworkAvailable
+    }
+
+    /**
+     * Set snackbar event to false
+     *
+     */
+    fun doneShowingSnackbar() {
+        snackbarNotificationData.value = false
     }
 
     /**
